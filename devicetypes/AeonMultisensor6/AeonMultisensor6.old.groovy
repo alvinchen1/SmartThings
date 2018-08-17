@@ -25,7 +25,7 @@
  */
 
  metadata {
-	definition (name: "Aeon Multisensor 6 (Advanced)", namespace: "AeonMultisensor6", author: "Alvin Chen") {
+	definition (name: "Aeon Multisensor 6 (Advanced)", namespace: "erocm123", author: "Eric Maycock") {
 		capability "Motion Sensor"
 		capability "Acceleration Sensor"
 		capability "Temperature Measurement"
