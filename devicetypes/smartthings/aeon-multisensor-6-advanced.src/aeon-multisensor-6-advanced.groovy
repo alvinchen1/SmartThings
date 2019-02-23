@@ -20,9 +20,11 @@
  *  on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License
  *  for the specific language governing permissions and limitations under the License.
  *
- *  2019-02-23: Adding some customizations
+ *  Sourced from https://github.com/erocm123/SmartThingsPublic/blob/master/devicetypes/erocm123/aeon-multisensor-6-advanced.src/aeon-multisensor-6-advanced.groovy
+ *
  *  2018-07-20: Added a "region override" option to customize which region the firmware is from (EU, US, AU) if 
  *              the device handler can't detect it on its own. 
+ *  2019-02-23: Adding some of my own customizations
  */
 
  metadata {
