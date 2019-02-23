@@ -12,6 +12,8 @@
  *
  *  Z-Wave Door/Window Sensor
  *
+ *  Sourced from https://github.com/verbem/SmartThingsPublic/blob/master/devicetypes/smartthings/zwave-door-window-sensor.src/zwave-door-window-sensor.groovy
+ *
  *  Author: SmartThings
  *  Date: 2019-02-23: Doing my own things with this
  *  Date: 2013-11-03:
