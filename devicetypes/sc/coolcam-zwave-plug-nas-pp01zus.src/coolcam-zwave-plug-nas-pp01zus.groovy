@@ -15,7 +15,7 @@
  */
 
 metadata {
-        definition (name: "CoolCam Z-Wave Plug (NAS-PP01ZUS)", namespace: "sc", author: "Alvin Chen with SoonChye") {
+        definition (name: "CoolCam Z-Wave Plug (NAS-PP01ZUS)", namespace: "SmartThings", author: "Alvin Chen with SoonChye") {
                 capability "Switch"
                 capability "Refresh"
                 capability "Indicator"
