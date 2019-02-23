@@ -12,6 +12,8 @@
  *  on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License
  *  for the specific language governing permissions and limitations under the License.
  *
+ *  Sourced from https://github.com/verbem/SmartThingsPublic/blob/master/devicetypes/smartthings/zwave-door-window-sensor.src/zwave-door-window-sensor.groovy
+ *
  *  Updates:
  *  -------
  *  02-23-2019 : Doing my own things with colors
