@@ -10,6 +10,8 @@
  *  on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License
  *  for the specific language governing permissions and limitations under the License.
  *
+ *  Sourced from https://github.com/jsconstantelos/jcdevhandlers/blob/master/devicetypes/jscgs350/my-keen-home-smart-vent.src/my-keen-home-smart-vent.groovy
+ *
  *  Updates:
  *  -------
  *  02-18-2016 : Initial commit
