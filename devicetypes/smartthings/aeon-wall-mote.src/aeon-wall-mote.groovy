@@ -15,6 +15,8 @@
  *  Author: Eric Maycock (erocm123)
  *  Date: 2017-06-19
  *
+ *  Sourced from https://github.com/erocm123/SmartThingsPublic/blob/master/devicetypes/erocm123/aeon-wallmote.src/aeon-wallmote.groovy
+ *
  *  2017-06-19: Added check to only send color change config for three wakeups. Editing preferences
  *              and hitting "done" will reset the counter. This is an attempt to prevent freezing
  *              caused by updating preferences.
