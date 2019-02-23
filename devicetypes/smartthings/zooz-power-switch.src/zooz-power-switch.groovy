@@ -6,7 +6,7 @@
  *    Kevin LaFramboise (krlaframboise)
  *
  *  URL to documentation: https://community.smartthings.com/t/release-zooz-power-switch-zooz-smart-plug/97220?u=krlaframboise
- *    
+ *  Sourced from https://github.com/krlaframboise/SmartThings/tree/master/devicetypes/krlaframboise/zooz-power-switch.src    
  *
  *  Changelog:
  *
