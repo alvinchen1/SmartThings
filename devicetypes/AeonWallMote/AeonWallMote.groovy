@@ -18,10 +18,11 @@
  *  2017-06-19: Added check to only send color change config for three wakeups. Editing preferences
  *              and hitting "done" will reset the counter. This is an attempt to prevent freezing
  *              caused by updating preferences.
+ *  2019-02-23: Adding my own customizations
  */
  
 metadata {
-	definition (name: "Aeon WallMote", namespace: "erocm123", author: "Eric Maycock") {
+	definition (name: "Aeon WallMote", namespace: "SmartThings", author: "Alvin Chen") {
 		capability "Actuator"
 		capability "Button"
         capability "Holdable Button"
