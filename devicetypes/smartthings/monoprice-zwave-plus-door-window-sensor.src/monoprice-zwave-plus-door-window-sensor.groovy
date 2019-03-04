@@ -45,7 +45,7 @@
  */
 metadata {
 	definition (
-		name: "Monoprice Z-Wave Plus Door/Window Sensor", 
+		name: "Monoprice Z-Wave Plus Door/Window Sensor - Retiring", 
 		namespace: "SmartThings", 
 		author: "Alvin Chen"
 	) {
