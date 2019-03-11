@@ -53,6 +53,7 @@ def clientVersion() {
  */
 
 preferences {
+    section("paragraph") {icon()}
     input title: "", description: "Monoprice Door/Window Sensor Device Handler v${clientVersion()}", displayDuringSetup: false, type: "paragraph", element: "paragraph"
 	input title: "", description: "Some devices (e.g. 15270) can use an external wired sensor instead of the magnet sensor to trigger the open/close state.\nNOTE: To use the external wire sensor you MUST attach the magnet sensor to the device.", displayDuringSetup: false, type: "paragraph", element: "paragraph"
     input "externalSensor", "bool", title: "External wired sensor", defaultValue: false, displayDuringSetup: false, required: false
