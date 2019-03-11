@@ -13,6 +13,7 @@
  *  Ver1.0 - First release
  * 
  *  2/23/2019 - Doing my own thing with it
+ *  3/11/2019 - Dropping the device number from the name
  */
 
 metadata {
