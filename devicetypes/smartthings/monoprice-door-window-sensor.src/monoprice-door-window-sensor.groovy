@@ -87,8 +87,8 @@ metadata {
     tiles(scale: 2) {
         multiAttributeTile(name:"summary", type: "generic", width: 6, height: 4, canChangeIcon: true) {
             tileAttribute ("device.contact", key: "PRIMARY_CONTROL") {
-                attributeState "open", label: '${name}', backgroundColor: "#e86d13"
-                attributeState "closed", label: '${name}', backgroundColor: "#00A0DC"
+                attributeState "open", label: '${name}', icon: "st.contact.contact.open", backgroundColor: "#e86d13"
+                attributeState "closed", label: '${name}', icon: "st.contact.contact.closed", backgroundColor: "#00A0DC"
             }
             tileAttribute ("device.battery", key: "SECONDARY_CONTROL") {
 				attributeState "battery", label:'${currentValue}%'
