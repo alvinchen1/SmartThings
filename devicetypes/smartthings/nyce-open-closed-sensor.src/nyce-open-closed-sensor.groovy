@@ -16,7 +16,7 @@
  *
  *  04-10-2016 : motley74 Added fingerprint for NYCE Door Hinge Sensor
  *  02-23-2019 : Doing my own things with colors
- *
+ *  04-02-2019 : Dropping Battery as it doesn't work and is awful'
  *
  */
  
@@ -58,6 +58,7 @@ metadata {
 
 		main (["contact"])
 		details(["contact","refresh"])
+		//details(["contact","battery","refresh"])
 	}
 }
 
