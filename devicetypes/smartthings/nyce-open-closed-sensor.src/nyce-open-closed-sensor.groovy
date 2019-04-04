@@ -16,13 +16,13 @@
  *
  *  04-10-2016 : motley74 Added fingerprint for NYCE Door Hinge Sensor
  *  02-23-2019 : Doing my own things with colors
- *  04-02-2019 : Dropping Battery as it doesn't work and is awful'
+ *
  *
  */
  
 metadata {
 	definition (name: "NYCE Open/Closed Sensor", namespace: "SmartThings", author: "Alvin Chen") {
-    	//capability "Battery"
+    	capability "Battery"
 		capability "Configuration"
         capability "Contact Sensor"
 		capability "Refresh"
@@ -48,17 +48,16 @@ metadata {
 			state("closed", label:'${name}', icon:"st.contact.contact.closed", backgroundColor:"#00A0DC")
 		}
 
-		//valueTile("battery", "device.battery", decoration: "flat", inactiveLabel: false) {
-			//state "battery", label:'${currentValue}% battery', unit:""
-		//}
+		valueTile("battery", "device.battery", decoration: "flat", inactiveLabel: false) {
+			state "battery", label:'${currentValue}% battery', unit:""
+		}
 
 		standardTile("refresh", "device.refresh", inactiveLabel: false, decoration: "flat") {
 			state "default", action:"refresh.refresh", icon:"st.secondary.refresh"
 		}
 
 		main (["contact"])
-		details(["contact","refresh"])
-		//details(["contact","battery","refresh"])
+		details(["contact","battery","refresh"])
 	}
 }
 
@@ -120,43 +119,43 @@ private Map parseCatchAllMessage(String description) {
 		log.debug "parseCatchAllMessage: msgStatus: ${msgStatus}"
 		if (msgStatus == 0) {
 			switch(cluster.clusterId) {
-				//case 0x0001:
-				//	log.debug 'Battery'
-				//	resultMap.name = 'battery'
-				//	log.info "in parse catch all"
-				//	log.debug "battery value: ${cluster.data.last()}"
-				//	resultMap.value = getBatteryPercentage(cluster.data.last())
-				//	break
-				//case 0x0402:    // temperature cluster
-				//	if (cluster.command == 0x01) {
-				//		if(cluster.data[3] == 0x29) {
-				//			def tempC = Integer.parseInt(cluster.data[-2..-1].reverse().collect{cluster.hex1(it)}.join(), 16) / 100
-				//			resultMap = getTemperatureResult(getConvertedTemperature(tempC))
-				//			log.debug "parseCatchAllMessage: Temp resultMap: ${resultMap}"
-				//		}
-				//		else {
-				//			log.debug "parseCatchAllMessage: Temperature cluster Wrong data type"
-				//		}
-				//	}
-				//	else {
-				//		log.debug "parseCatchAllMessage: Unhandled Temperature cluster command ${cluster.command}"
-				//	}
-				//	break
-				//case 0x0405:    // humidity cluster
-				//	if (cluster.command == 0x01) {
-				//		if(cluster.data[3] == 0x21) {
-				//			def hum = Integer.parseInt(cluster.data[-2..-1].reverse().collect{cluster.hex1(it)}.join(), 16) / 100
-				//			resultMap = getHumidityResult(hum)
-				//			log.debug "parseCatchAllMessage: Hum resultMap: ${resultMap}"
-				//		}
-				//		else {
-				//			log.debug "parseCatchAllMessage: Humidity cluster wrong data type"
-				//		}
-				//	}
-				//	else {
-				//		log.debug "parseCatchAllMessage: Unhandled Humidity cluster command ${cluster.command}"
-				//	}
-				//	break
+				case 0x0001:
+					log.debug 'Battery'
+					resultMap.name = 'battery'
+					log.info "in parse catch all"
+					log.debug "battery value: ${cluster.data.last()}"
+					resultMap.value = getBatteryPercentage(cluster.data.last())
+					break
+				case 0x0402:    // temperature cluster
+					if (cluster.command == 0x01) {
+						if(cluster.data[3] == 0x29) {
+							def tempC = Integer.parseInt(cluster.data[-2..-1].reverse().collect{cluster.hex1(it)}.join(), 16) / 100
+							resultMap = getTemperatureResult(getConvertedTemperature(tempC))
+							log.debug "parseCatchAllMessage: Temp resultMap: ${resultMap}"
+						}
+						else {
+							log.debug "parseCatchAllMessage: Temperature cluster Wrong data type"
+						}
+					}
+					else {
+						log.debug "parseCatchAllMessage: Unhandled Temperature cluster command ${cluster.command}"
+					}
+					break
+				case 0x0405:    // humidity cluster
+					if (cluster.command == 0x01) {
+						if(cluster.data[3] == 0x21) {
+							def hum = Integer.parseInt(cluster.data[-2..-1].reverse().collect{cluster.hex1(it)}.join(), 16) / 100
+							resultMap = getHumidityResult(hum)
+							log.debug "parseCatchAllMessage: Hum resultMap: ${resultMap}"
+						}
+						else {
+							log.debug "parseCatchAllMessage: Humidity cluster wrong data type"
+						}
+					}
+					else {
+						log.debug "parseCatchAllMessage: Unhandled Humidity cluster command ${cluster.command}"
+					}
+					break
 				default:
 					break
 			}
@@ -169,27 +168,27 @@ private Map parseCatchAllMessage(String description) {
 	return resultMap
 }
 
-//private int getBatteryPercentage(int value) {
-//	def minVolts = 2.3
-//	def maxVolts = 3.1
-//	def volts = value / 10
-//	def pct = (volts - minVolts) / (maxVolts - minVolts)
-//
-//	//for battery that may have a higher voltage than 3.1V
-//	if( pct > 1 )
-//	{
-//		pct = 1
-//	}
-//
+private int getBatteryPercentage(int value) {
+	def minVolts = 2.3
+	def maxVolts = 3.1
+	def volts = value / 10
+	def pct = (volts - minVolts) / (maxVolts - minVolts)
+
+	//for battery that may have a higher voltage than 3.1V
+	if( pct > 1 )
+	{
+		pct = 1
+	}
+
 	//the device actual shut off voltage is 2.25. When it drops to 2.3, there
 	//is actually still 0.05V, which is about 6% of juice left.
 	//setting the percentage to 6% so a battery low warning is issued
-//	if( pct <= 0 )
-//	{
-//		pct = 0.06
-//	}
-//	return (int) pct * 100
-//}
+	if( pct <= 0 )
+	{
+		pct = 0.06
+	}
+	return (int) pct * 100
+}
 
 private boolean shouldProcessMessage(cluster) {
 	// 0x0B is default response indicating message got through
@@ -212,11 +211,11 @@ private Map parseReportAttributeMessage(String description) {
 	log.debug "parseReportAttributeMessage: descMap ${descMap}"
 
 	switch(descMap.cluster) {
-		//case "0001":
-		//	log.debug 'Battery'
-		//	resultMap.name = 'battery'
-		//	resultMap.value = getBatteryPercentage(convertHexToInt(descMap.value))
-		//	break
+		case "0001":
+			log.debug 'Battery'
+			resultMap.name = 'battery'
+			resultMap.value = getBatteryPercentage(convertHexToInt(descMap.value))
+			break
 		default:
 			log.info descMap.cluster
 			log.info "cluster1"
@@ -231,12 +230,12 @@ private List parseIasMessage(String description) {
 	String msgCode = parsedMsg[2]
 
 	List resultListMap = []
-	//Map resultMap_battery = [:]
-	//Map resultMap_battery_state = [:]
-	//Map resultMap_sensor = [:]
-	//
+	Map resultMap_battery = [:]
+	Map resultMap_battery_state = [:]
+	Map resultMap_sensor = [:]
+
 	// Relevant bit field definitions from ZigBee spec
-	//def BATTERY_BIT = ( 1 << 3 )
+	def BATTERY_BIT = ( 1 << 3 )
 	def TROUBLE_BIT = ( 1 << 6 )
 	def SENSOR_BIT = ( 1 << 0 )		// it's ALARM1 bit from the ZCL spec
 
@@ -246,7 +245,7 @@ private List parseIasMessage(String description) {
 	log.debug "parseIasMessage: zoneStatus: ${zoneStatus}"
 
 	// Check each relevant bit, create map for it, and add to list
-	//log.debug "parseIasMessage: Battery Status ${zoneStatus & BATTERY_BIT}"
+	log.debug "parseIasMessage: Battery Status ${zoneStatus & BATTERY_BIT}"
 	log.debug "parseIasMessage: Trouble Status ${zoneStatus & TROUBLE_BIT}"
 	log.debug "parseIasMessage: Sensor Status ${zoneStatus & SENSOR_BIT}"
 
@@ -278,8 +277,8 @@ private List parseIasMessage(String description) {
 	resultMap_sensor.name = "contact"
 	resultMap_sensor.value = (zoneStatus & SENSOR_BIT) ? "open" : "closed"
 
-	//resultListMap << resultMap_battery_state
-	//resultListMap << resultMap_battery
+	resultListMap << resultMap_battery_state
+	resultListMap << resultMap_battery
 	resultListMap << resultMap_sensor
 
 	return resultListMap
@@ -290,9 +289,9 @@ def configure() {
 
 	def configCmds = [
 			//battery reporting and heartbeat
-			//"zdo bind 0x${device.deviceNetworkId} 1 ${endpointId} 1 {${device.zigbeeId}} {}", "delay 200",
-			//"zcl global send-me-a-report 1 0x20 0x20 600 3600 {01}", "delay 200",
-			//"send 0x${device.deviceNetworkId} 1 ${endpointId}", "delay 1500",
+			"zdo bind 0x${device.deviceNetworkId} 1 ${endpointId} 1 {${device.zigbeeId}} {}", "delay 200",
+			"zcl global send-me-a-report 1 0x20 0x20 600 3600 {01}", "delay 200",
+			"send 0x${device.deviceNetworkId} 1 ${endpointId}", "delay 1500",
 
 
 			// Writes CIE attribute on end device to direct reports to the hub's EUID
@@ -344,9 +343,9 @@ Integer convertHexToInt(hex) {
 	Integer.parseInt(hex,16)
 }
 
-//def refresh() {
-//	log.debug "Refreshing Battery"
-//	[
-//			"st rattr 0x${device.deviceNetworkId} ${endpointId} 1 0x20", "delay 200"
-//	]
-//}
+def refresh() {
+	log.debug "Refreshing Battery"
+	[
+			"st rattr 0x${device.deviceNetworkId} ${endpointId} 1 0x20", "delay 200"
+	]
+}
