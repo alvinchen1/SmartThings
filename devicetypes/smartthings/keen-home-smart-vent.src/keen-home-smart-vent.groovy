@@ -334,7 +334,7 @@ private Map makeTemperatureResult(value) {
         // log.debug "offset: ${offset}"
         def v = value as int
         // log.debug "v: ${v}"
-        value = (v + offset).round()
+        value = v + offset
         // log.debug "value: ${value}"
     }
 
@@ -361,8 +361,8 @@ private def convertTemperature(celsius) {
     if(getTemperatureScale() == "C"){
         return celsius
     } else {
-        def fahrenheit = Math.round(celsiusToFahrenheit(celsius) * 100) /100
-        // log.debug "converted to F: ${fahrenheit}"
+        def fahrenheit = Math.round(celsiusToFahrenheit(celsius)) 
+        log.debug "converted to F: ${fahrenheit}"
         return fahrenheit
     }
 }
