@@ -22,7 +22,7 @@
  
 metadata {
 	definition (name: "NYCE Open/Closed Sensor", namespace: "SmartThings", author: "Alvin Chen") {
-    	capability "Battery"
+    	// capability "Battery"
 		capability "Configuration"
         capability "Contact Sensor"
 		capability "Refresh"
@@ -48,16 +48,17 @@ metadata {
 			state("closed", label:'${name}', icon:"st.contact.contact.closed", backgroundColor:"#00A0DC")
 		}
 
-		valueTile("battery", "device.battery", decoration: "flat", inactiveLabel: false) {
-			state "battery", label:'${currentValue}% battery', unit:""
-		}
+		//valueTile("battery", "device.battery", decoration: "flat", inactiveLabel: false) {
+		//	state "battery", label:'${currentValue}% battery', unit:""
+		//}
 
 		standardTile("refresh", "device.refresh", inactiveLabel: false, decoration: "flat") {
 			state "default", action:"refresh.refresh", icon:"st.secondary.refresh"
 		}
 
 		main (["contact"])
-		details(["contact","battery","refresh"])
+		//details(["contact","battery","refresh"])
+		details(["contact","refresh"])
 	}
 }
 
