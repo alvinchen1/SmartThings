@@ -348,9 +348,9 @@ private Map makeTemperatureResult(value) {
 
 /**** HELPER METHODS ****/
 private def convertTemperatureHex(value) {
-    // log.debug "convertTemperatureHex(${value})"
+    log.debug "convertTemperatureHex(${value})"
     def celsius = Integer.parseInt(value, 16).shortValue() / 100
-    // log.debug "celsius: ${celsius}"
+    log.debug "celsius: ${celsius}"
 
     return convertTemperature(celsius)
 }
