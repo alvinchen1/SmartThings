@@ -482,10 +482,10 @@ private createSwitchEvent(value, type) {
 def zwaveEvent(physicalgraph.zwave.commands.meterv3.MeterReport cmd) {
 	logTrace "MeterReport: $cmd"
 	def result = []	
-	def val = cmd.scaledMeterValue.round()
+	def val = roundTwoPlaces(cmd.scaledMeterValue)
 		
 	def meter 
-	switch (cmd.scale) {
+	switch (cmd.scale.round(0)) {
 		case meterEnergy.scale:			
 			meter = meterEnergy
 			break
