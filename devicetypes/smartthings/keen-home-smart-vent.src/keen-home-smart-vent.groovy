@@ -340,7 +340,7 @@ private Map makeTemperatureResult(value) {
 
     return [
         name: 'temperature',
-        value: "" + value,
+        value: "" + value.round(),
         descriptionText: "${linkText} is ${value}°${temperatureScale}",
         displayed: true
     ]
