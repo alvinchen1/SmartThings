@@ -271,7 +271,7 @@ def zwaveEvent(physicalgraph.zwave.commands.sensormultilevelv5.SensorMultilevelR
 			map.name = "temperature"
 			def cmdScale = cmd.scale == 1 ? "F" : "C"
             state.realTemperature = convertTemperatureIfNeeded(cmd.scaledSensorValue, cmdScale, cmd.precision)
-			map.value = getAdjustedTemp(state.realTemperature)
+			map.value = getAdjustedTemp(state.realTemperature).round()
 			map.unit = getTemperatureScale()
             logging("Temperature Report: $map.value")
 			break;
