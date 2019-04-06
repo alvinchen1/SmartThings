@@ -334,13 +334,13 @@ private Map makeTemperatureResult(value) {
         // log.debug "offset: ${offset}"
         def v = value as int
         // log.debug "v: ${v}"
-        value = v + offset
+        value = (v + offset).round()
         // log.debug "value: ${value}"
     }
 
     return [
         name: 'temperature',
-        value: "" + value.round(),
+        value: "" + value,
         descriptionText: "${linkText} is ${value}°${temperatureScale}",
         displayed: true
     ]
