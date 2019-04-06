@@ -184,7 +184,7 @@ private getMeterCurrent() {
 }
 
 private getMeterMap(name, scale, unit, limit, displayed) {
-	return [name:name, scale:scale, unit:unit, limit: limit, displayed:displayed]
+	return [name:name, scale:scale, unit:unit, limit:limit, displayed:displayed]
 }
 
 
@@ -482,10 +482,10 @@ private createSwitchEvent(value, type) {
 def zwaveEvent(physicalgraph.zwave.commands.meterv3.MeterReport cmd) {
 	logTrace "MeterReport: $cmd"
 	def result = []	
-	def val = roundTwoPlaces(cmd.scaledMeterValue)
+	def val = round(cmd.scaledMeterValue)
 		
 	def meter 
-	switch (cmd.scale.round(0)) {
+	switch (cmd.scale) {
 		case meterEnergy.scale:			
 			meter = meterEnergy
 			break
