@@ -491,7 +491,7 @@ def zwaveEvent(physicalgraph.zwave.commands.meterv3.MeterReport cmd) {
 			break
 		case meterPower.scale:
 			createAccelerationEvent(val)		
-			meter = meterPower
+			meter = meterPower.round()
 			break
 		case meterVoltage.scale:
 			meter = meterVoltage
