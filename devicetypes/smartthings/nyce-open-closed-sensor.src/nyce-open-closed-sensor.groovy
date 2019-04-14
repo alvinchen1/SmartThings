@@ -120,13 +120,13 @@ private Map parseCatchAllMessage(String description) {
 		log.debug "parseCatchAllMessage: msgStatus: ${msgStatus}"
 		if (msgStatus == 0) {
 			switch(cluster.clusterId) {
-				case 0x0001:
-					log.debug 'Battery'
-					resultMap.name = 'battery'
-					log.info "in parse catch all"
-					log.debug "battery value: ${cluster.data.last()}"
-					resultMap.value = getBatteryPercentage(cluster.data.last())
-					break
+				// case 0x0001:
+				//	log.debug 'Battery'
+				//	resultMap.name = 'battery'
+				//	log.info "in parse catch all"
+				//	log.debug "battery value: ${cluster.data.last()}"
+				//	resultMap.value = getBatteryPercentage(cluster.data.last())
+				//	break
 				case 0x0402:    // temperature cluster
 					if (cluster.command == 0x01) {
 						if(cluster.data[3] == 0x29) {
