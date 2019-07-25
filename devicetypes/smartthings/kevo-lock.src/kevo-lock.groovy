@@ -205,7 +205,7 @@ def kevoCommandPost(path, body, callback, contentType, passthru = null) {
     String stringBody = body?.collect { k, v -> "$k=$v" }?.join("&")?.toString() ?: ""
 
     def params = [
-            uri               : "https://mykevo.com",
+            uri               : "https://www.mykevo.com",
             path              : path,
             body              : stringBody,
             headers           : headers,
@@ -253,7 +253,7 @@ def kevoCommandGet(path, query, callback, contentType, passthru = null) {
 //    log.trace "kevoCommandGet(path:$path, query:$query, contentType:$contentType, callback:$callback, headers: $headers)"
 
     def params = [
-            uri               : "https://mykevo.com",
+            uri               : "https://www.mykevo.com",
             path              : path,
             query             : query,
             headers           : headers,
@@ -303,7 +303,7 @@ def getHeaders() {
             "Cache-Control": "no-cache"
     ]
     if (state.token) {
-        headers["Referer"] = state.referer ?: "https://mykevo.com/login"
+        headers["Referer"] = state.referer ?: "https://www.mykevo.com/login"
         headers["X-CSRF-TOKEN"] = state.token
     }
     return headers
