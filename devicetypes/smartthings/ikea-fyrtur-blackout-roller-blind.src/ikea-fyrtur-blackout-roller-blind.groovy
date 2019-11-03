@@ -13,7 +13,10 @@
  *
  *   first release for IKEA smart window blinds
  *   Sourced from https://raw.githubusercontent.com/a4refillpad/Ikea/master/devicetypes/IKEA-window-blinds
- *   11/3/2019 - Changed colors to match
+ *  
+ *   Versions
+ *   1.1      11/3/2019 - Added CloseOverride
+ *   1.0      11/3/2019 - Changed colors to match
  */
 import physicalgraph.zigbee.zcl.DataType
 
