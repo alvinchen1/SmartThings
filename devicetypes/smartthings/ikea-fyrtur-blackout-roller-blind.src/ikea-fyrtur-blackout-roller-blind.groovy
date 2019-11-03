@@ -73,10 +73,10 @@ metadata {
 
         main "windowShade"
         details(["windowShade", "shadeLevel", "levelSliderControl", "contPause", "battery", "refresh", "resetClosed", "resetOpen"])
-    }
-    preferences {
-        input "settingCloseOverride", "number", title: "Closed Override: Manually lower blinds as far as you want them to go, note value, then set here.", description: "This value sets a new 0.", range: "*..*", defaultValue: 0, displayDuringSetup: false
-    }
+        }
+        preferences {
+             input "settingCloseOverride", "number", title: "Closed Override Value: Manually lower blinds as far as you want them to go, note value when closed, then set here.", description: "This value sets a new 0.", range: "*..*", defaultValue: 0, displayDuringSetup: false
+        }
 
 }
 
@@ -115,8 +115,8 @@ def parse(String description) {
             List<Map> descMaps = collectAttributes(descMap)
             def liftmap = descMaps.find { it.attrInt == ATTRIBUTE_POSITION_LIFT }
             if (liftmap && liftmap.value) {
-                def newLevel = round(100 - (zigbee.convertHexToInt(liftmap.value)*(100/(100-settings.settingCloseOverride))))
-                
+                def newLevel = 100 - (zigbee.convertHexToInt(liftmap.value)*(100/(100-settings.settingCloseOverride)))
+                    newLevel = newLevel.toInteger
                      if (newLevel <= 100) {
                           levelEventHandler(newLevel)
                      }
@@ -164,13 +164,24 @@ def updateFinalState() {
 
 def close() {
     log.info "close()"
+    
+    if (settings.settingCloseOverride > 0) {
+         def cmd
+         cmd = zigbee.command(CLUSTER_WINDOW_COVERING, COMMAND_GOTO_LIFT_PERCENTAGE, zigbee.convertToHexString(100 - settings.settingCloseOverride.toInteger(), 2))
+         return cmd
+    }
+    else {
     zigbee.command(CLUSTER_WINDOW_COVERING, COMMAND_CLOSE)
-
+    }
+    sendEvent(name: "windowShade", value: "closed")
+    //sendEvent(name: "level", value: 0)
 }
 
 def open() {
     log.info "open()"
     zigbee.command(CLUSTER_WINDOW_COVERING, COMMAND_OPEN)
+    sendEvent(name: "windowShade", value: "open")
+    //sendEvent(name: "level", value: 100)
 }
 
 def setLevel(data, rate = null) {
@@ -178,8 +189,6 @@ def setLevel(data, rate = null) {
     log.info "setLevel()"
     def cmd
     cmd = zigbee.command(CLUSTER_WINDOW_COVERING, COMMAND_GOTO_LIFT_PERCENTAGE, zigbee.convertToHexString(100 - data, 2))
-
-
     return cmd
 }
 
@@ -201,7 +210,6 @@ def refresh() {
     
     def cmds
     cmds = zigbee.readAttribute(CLUSTER_WINDOW_COVERING, ATTRIBUTE_POSITION_LIFT) + zigbee.readAttribute(CLUSTER_BATTERY_LEVEL, 0x0021) 
-
     return cmds
 }
 
@@ -213,6 +221,5 @@ def configure() {
 
     def cmds
     cmds = zigbee.configureReporting(CLUSTER_WINDOW_COVERING, ATTRIBUTE_POSITION_LIFT, DataType.UINT8, 0, 600, null) + zigbee.configureReporting(CLUSTER_BATTERY_LEVEL, 0x0021, DataType.UINT8, 600, 21600, 0x01)
-
     return refresh() + cmds
 }
