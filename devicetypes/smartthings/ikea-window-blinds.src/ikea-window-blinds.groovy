@@ -115,9 +115,16 @@ def parse(String description) {
             List<Map> descMaps = collectAttributes(descMap)
             def liftmap = descMaps.find { it.attrInt == ATTRIBUTE_POSITION_LIFT }
             if (liftmap && liftmap.value) {
-                def newLevel = 100 - zigbee.convertHexToInt(liftmap.value)
-                levelEventHandler(newLevel)
-            }
+                def newLevel = round(100 - (zigbee.convertHexToInt(liftmap.value)*(100/(100-settings.settingCloseOverride))))
+                
+                     if (newLevel <= 100) {
+                          levelEventHandler(newLevel)
+                     }
+                     else {
+                          newlevel = 100
+                          levelEventHandler(newlevel)
+                     }
+                }
         } 
         if (descMap?.clusterInt == CLUSTER_BATTERY_LEVEL && descMap.value) {
             log.debug "attr: ${descMap?.attrInt}, value: ${descMap?.value}, descValue: ${Integer.parseInt(descMap.value, 16)}"
@@ -133,8 +140,8 @@ def levelEventHandler(currentLevel) {
         log.debug "Ignore invalid reports"
     } else {
         sendEvent(name: "level", value: currentLevel)
-        if (currentLevel == settings.settingCloseOverride || currentLevel == 100) {
-            sendEvent(name: "windowShade", value: currentLevel == settings.settingCloseOverride ? "closed" : "open")
+        if (currentLevel == 0 || currentLevel == 100) {
+            sendEvent(name: "windowShade", value: currentLevel == 0 ? "closed" : "open")
         } else {
             if (lastLevel < currentLevel) {
                 sendEvent([name:"windowShade", value: "opening"])
@@ -150,7 +157,7 @@ def levelEventHandler(currentLevel) {
 def updateFinalState() {
     def level = device.currentValue("level")
     log.debug "updateFinalState: ${level}"
-    if (level > settings.settingCloseOverride && level < 100) {
+    if (level > 0 && level < 100) {
         sendEvent(name: "windowShade", value: "partially open")
     }
 }
