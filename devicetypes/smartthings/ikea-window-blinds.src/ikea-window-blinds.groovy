@@ -74,6 +74,10 @@ metadata {
         main "windowShade"
         details(["windowShade", "shadeLevel", "levelSliderControl", "contPause", "battery", "refresh", "resetClosed", "resetOpen"])
     }
+    preferences {
+        input "settingCloseOverride", "number", title: "Closed Override", description: "Manually lower blinds to close, note value, set here.", range: "*..*", defaultValue: 0, displayDuringSetup: false
+    }
+
 }
 
 private getCLUSTER_BATTERY_LEVEL() { 0x0001 }
@@ -129,8 +133,8 @@ def levelEventHandler(currentLevel) {
         log.debug "Ignore invalid reports"
     } else {
         sendEvent(name: "level", value: currentLevel)
-        if (currentLevel == 0 || currentLevel == 100) {
-            sendEvent(name: "windowShade", value: currentLevel == 0 ? "closed" : "open")
+        if (currentLevel == settings.settingCloseOverride || currentLevel == 100) {
+            sendEvent(name: "windowShade", value: currentLevel == settings.settingCloseOverride ? "closed" : "open")
         } else {
             if (lastLevel < currentLevel) {
                 sendEvent([name:"windowShade", value: "opening"])
@@ -146,7 +150,7 @@ def levelEventHandler(currentLevel) {
 def updateFinalState() {
     def level = device.currentValue("level")
     log.debug "updateFinalState: ${level}"
-    if (level > 0 && level < 100) {
+    if (level > settings.settingCloseOverride && level < 100) {
         sendEvent(name: "windowShade", value: "partially open")
     }
 }
