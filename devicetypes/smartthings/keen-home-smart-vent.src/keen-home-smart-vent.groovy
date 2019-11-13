@@ -396,6 +396,7 @@ private def makeLevelCommand(level) {
 /**** COMMAND METHODS ****/
 def on() {
     def linkText = getLinkText(device)
+    setLevel(100)
     log.debug "open ${linkText}"
 
     // only change the state if the vent is not obstructed
