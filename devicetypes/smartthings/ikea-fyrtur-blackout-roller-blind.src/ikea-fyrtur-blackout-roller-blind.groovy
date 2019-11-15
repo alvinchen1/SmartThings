@@ -41,9 +41,9 @@ metadata {
     tiles(scale: 2) {
         multiAttributeTile(name:"windowShade", type: "generic", width: 6, height: 4) {
             tileAttribute("device.windowShade", key: "PRIMARY_CONTROL") {
-                attributeState "open", label: 'Open', action: "close", icon: "https://raw.githubusercontent.com/a4refillpad/media/master/blind-open.png", backgroundColor: "#70B844", nextState: "closing"
-                attributeState "closed", label: 'Closed', action: "open", icon: "https://raw.githubusercontent.com/a4refillpad/media/master/blind-closed.png", backgroundColor: "#F5A623", nextState: "opening"
-                attributeState "partially open", label: 'Partially open', action: "close", icon: "https://raw.githubusercontent.com/a4refillpad/media/master/blind-part-open.png", backgroundColor: "#d45614", nextState: "closing"
+                attributeState "open", label: 'Open', action: "close", icon: "https://raw.githubusercontent.com/a4refillpad/media/master/blind-open.png", backgroundColor: "#e86d13", nextState: "closing"
+                attributeState "closed", label: 'Closed', action: "open", icon: "https://raw.githubusercontent.com/a4refillpad/media/master/blind-closed.png", backgroundColor: "#00A0DC", nextState: "opening"
+                attributeState "partially open", label: 'Partially open', action: "close", icon: "https://raw.githubusercontent.com/a4refillpad/media/master/blind-part-open.png", backgroundColor: "#e86d13", nextState: "closing"
                 attributeState "opening", label: 'Opening', action: "pause", icon: "st.thermostat.thermostat-up", backgroundColor: "#e86d13", nextState: "partially open"
                 attributeState "closing", label: 'Closing', action: "pause", icon: "st.thermostat.thermostat-down", backgroundColor: "#00A0DC", nextState: "partially open"
             }
