@@ -46,8 +46,8 @@ metadata {
         tiles {
         
                 standardTile("switch", "device.switch", width: 2, height: 2, canChangeIcon: true) {
-                        state "on", label: '${name}', action: "switch.off", icon: "st.unknown.zwave.device", backgroundColor: "#00a0dc"
-                        state "off", label: '${name}', action: "switch.on", icon: "st.unknown.zwave.device", backgroundColor: "#ffffff"
+                        state "on", label: '${name}', action: "switch.off", icon: "st.switches.switch.on", backgroundColor: "#00a0dc"
+                        state "off", label: '${name}', action: "switch.on", icon: "st.switches.switch.on", backgroundColor: "#ffffff"
                 }
                 standardTile("refresh", "command.refresh", decoration: "flat") {
                         state "default", label:'', action:"refresh.refresh", icon:"st.secondary.refresh"
