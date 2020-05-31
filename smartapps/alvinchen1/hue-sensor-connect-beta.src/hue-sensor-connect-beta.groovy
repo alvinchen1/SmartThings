@@ -139,6 +139,7 @@ def pageBridges() {
     
                         
                     }
+                    TRACE("[pageBridges] IP address is ${networkAddress}")
                     def username = dev.currentValue("username") // HUE B Attribute  
                     if (username) {
                     	serialNumber = serialNumber.substring(6) // HUE B Attribute 
@@ -156,7 +157,7 @@ def pageBridges() {
     
                         
                     }
-                    
+                    TRACE("[pageBridges] username is ${username}")
                 }
                 if (z_Sensors) {
                     if (state.devices) {
