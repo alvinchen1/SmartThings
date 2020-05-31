@@ -120,7 +120,7 @@ def pageBridges() {
             if (z_Bridges) {
                 z_Bridges.each { dev ->
                     def serialNumber = dev.getDeviceNetworkId()
-                    def networkAddress = dev.getnetworkAddress()
+                    // def networkAddress = dev.getnetworkAddress()
                     def username = dev.currentValue("username") // HUE B Attribute  
                     if (username) {
                     	serialNumber = serialNumber.substring(6) // HUE B Attribute 
