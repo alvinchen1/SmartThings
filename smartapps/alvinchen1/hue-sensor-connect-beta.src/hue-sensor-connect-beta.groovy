@@ -852,7 +852,7 @@ def handlePollSensor(physicalgraph.device.HubResponse hubResponse) {
 }
 
 private poll(hostIP, usernameAPI) {
-
+    TRACE("[poll] hostIP ${hostIP}; usernameAPI is ${hostIP}")
 	if(hostIP.indexOf(":") == -1) hostIP = hostIP + ":80"
 
     def hubAction = new physicalgraph.device.HubAction(
