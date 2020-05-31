@@ -68,10 +68,9 @@ def pageBridges() {
 	if (z_Bridges) {
     	def canPoll = false
     	z_Bridges.each { dev ->
-        	def sN = dev.getDeviceNetworkId()
-            TRACE("[pageBridges] sN is ${sN}}")
+        	def sN = dev.currentValue("serialNumber")
             if (dev.currentValue("username")) {
-            	sN = sN.substring(12)  // Hue B
+            	sN = sN.substring(6)  // Hue B
                 TRACE("[pageBridges] Hue B SMART detected for ${sN}")
                 sourceBridge = "Hue B Smart"
             }
@@ -120,31 +119,25 @@ def pageBridges() {
             }
             if (z_Bridges) {
                 z_Bridges.each { dev ->
-                    def serialNumber = dev.getDeviceNetworkId()
-                    def networkAddress = dev.currentValue("ip") 
-                    //def IPaddress = dev.currentValue("ip") // HUE B Attribute  
-                    //if (IPaddress) {
-                    //serialNumber = serialNumber.substring(12) // HUE B Attribute 
-                    //}
+                    def serialNumber = dev.currentValue("serialNumber")
+                    def networkAddress = dev.currentValue("networkAddress")
                     def username = dev.currentValue("username") // HUE B Attribute  
                     if (username) {
-                    serialNumber = serialNumber.substring(12) // HUE B Attribute 
+                    	serialNumber = serialNumber.substring(6) // HUE B Attribute 
                     }
                     
-                    section("Bridge ${dev}, Serial:${serialNumber}, IPaddress:${networkAddress} Username for API is in device in IDE", hideable:true) {
-                    	                        if (!username) {
-                        	//href(name: "${dev.id}", title: "IDE Bridge device",required: false, style: "external", url: "${getApiServerUrl()}/device/show/${dev.id}", description: "tap to view device in IDE")
-                            input "z_BridgesUsernameAPI_${serialNumber}", "text", required:true, title:"Please enter the Username for ${dev}", submitOnChange:true
+                    section("Bridge ${dev}, Serial:${serialNumber}, IP:${networkAddress}, username for API is in device in IDE", hideable:true) {
+                    	if (!username) {
+                        	href(name: "${dev.id}", title: "IDE Bridge device",required: false, style: "external", url: "${getApiServerUrl()}/device/show/${dev.id}", description: "tap to view device in IDE")
+                            input "z_BridgesUsernameAPI_${serialNumber}", "text", required:true, title:"Username for API", submitOnChange:true
                         }
                         else {                         
                         	paragraph username
                         	input "z_BridgesUsernameAPI_${serialNumber}", "text", required:true, title:"Username for API", submitOnChange:true, description:username
                         }
-    
                         
                     }
-                    //TRACE("[pageBridges] Submitted IP address is ${networkAddress}")
-                    TRACE("[pageBridges] Submitted username is ${username}")
+                    
                 }
                 if (z_Sensors) {
                     if (state.devices) {
@@ -225,9 +218,9 @@ def handleBridges(evt) {
 def checkBridges() {
 
 	settings.z_Bridges.each { bridge ->
-    	def mac = bridge.getDeviceNetworkId()
+    	def mac = bridge.currentValue("serialNumber")
         if (bridge.currentValue("username")) {
-        	mac = mac.substring(12) // Hue B
+        	mac = mac.substring(6) // Hue B
         }
         
         state.devices.each { key, sensor -> 
@@ -279,14 +272,14 @@ def notifyNewVersion() {
 def elevatedDeviceCall(deviceId) {
 
     if (deviceId.indexOf("/sensor/") == -1) return
-    TRACE("[elevatedDeviceCall] entered ")
+    
     def mac = deviceId.split("/")[0]
     def sensor = deviceId.split("/")[2]
 	def usernameAPI = settings."z_BridgesUsernameAPI_${mac}"
-    def hostIP = settings."z_BridgesIPAddressAPI_${mac}"
+    def hostIP
     
     settings.z_Bridges.each { bridge ->
-        def match = bridge.dev.getDeviceNetworkId().indexOf(mac)
+        def match = bridge.currentValue("serialNumber").indexOf(mac)
     	if (match != -1) {
         	hostIP = bridge.currentValue("networkAddress") 
 			def i = 0
@@ -312,28 +305,26 @@ def pollTheSensors(data) {
 
     settings.z_Bridges.each { dev ->
 		
-		def serialNumber = dev.getDeviceNetworkId()
-        TRACE("[pollTheSensors 324] serial number is ${serialNumber}")
+		def serialNumber = dev.currentValue("serialNumber")
         if (dev.currentValue("username")) {
-        	serialNumber = serialNumber.substring(12)	// Hue B
+        	serialNumber = serialNumber.substring(6)	// Hue B
         }
-
-        def networkAddress = settings."z_BridgesIPAddressAPI_${serialNumber}"
-        TRACE("[pollTheSensors 330] networkaddress is ${networkAddress}")
+        
+        def networkAddress = dev.currentValue("networkAddress")
+               
 		if (settings."z_BridgesUsernameAPI_${serialNumber}") {
-        	pollRooms(settings."z_BridgesIPAddressAPI_${serialNumber}", settings."z_BridgesUsernameAPI_${serialNumber}")         
+        	pollRooms(networkAddress, settings."z_BridgesUsernameAPI_${serialNumber}")         
             
             if (state.pollSensors) {
                 if (!data.elevatedPolling) {
                     state.elevatedPolling = false
-                    TRACE("[pollTheSensors 337]")
-                    poll(settings."z_BridgesIPAddressAPI_${serialNumber}", settings."z_BridgesUsernameAPI_${serialNumber}")
+                    poll(networkAddress, settings."z_BridgesUsernameAPI_${serialNumber}")
                 }
                 else {
                     if (data?.dni == null) state.elevatedPolling = true
                     def i = 0
                     for (i = 0; i < 60; i = i + interval) {
-                        runIn(i+bridgecount, handleElevatedPoll, [data: [hostIP: settings."z_BridgesIPAddressAPI_${serialNumber}", usernameAPI: settings."z_BridgesUsernameAPI_${serialNumber}"], overwrite: false]) 
+                        runIn(i+bridgecount, handleElevatedPoll, [data: [hostIP: networkAddress, usernameAPI: settings."z_BridgesUsernameAPI_${serialNumber}"], overwrite: false]) 
                     }
                 }
         	}
@@ -357,7 +348,7 @@ def cleanupDevices() {
 	getChildDevices().each { dev ->
     	def found = false
         settings.z_Bridges.each { bridge ->
-        	def serialNumber = bridge.getDeviceNetworkId()
+        	def serialNumber = bridge.currentValue("serialNumber")
             log.info serialNumber + " - " + dev.deviceNetworkId.split("/")[0].toString() + "|"
             if (serialNumber.toString() == dev.deviceNetworkId.split("/")[0].toString()) {found = true; log.info "Found bridge for ${dev.deviceNetworkId}"}
         }
@@ -380,9 +371,9 @@ def monitorSensor(evt) {
 			def dni = key.split('_')[2]
 
 			settings.z_Bridges.each { dev ->
-				def mac2 = dev.getDeviceNetworkId().toString() 
+				def mac2 = dev.currentValue("serialNumber").toString() 
                 if (dev.currentValue("username"))  {
-                	mac2 = mac2.substring(12) // Hue B
+                	mac2 = mac2.substring(6) // Hue B
                 }
                 
                 if (mac == mac2) {
@@ -520,7 +511,7 @@ def handleChangeMode(evt) {
 def handleRooms(physicalgraph.device.HubResponse hubResponse) {
 	//TRACE("[handleRooms] entered")
 	def parsedEvent = parseEventMessage(hubResponse.description)
-    def mac = parsedEvent.mac.substring(12)
+    def mac = parsedEvent.mac.substring(6)
   
     if (hubResponse?.json?.error) {
     	log.error "[handleRooms] Error in ${mac} ${hubResponse.json.error}"	
@@ -566,7 +557,7 @@ def handleRoomPut(physicalgraph.device.HubResponse hubResponse) {
 
 	def dev
     def parsedEvent = parseEventMessage(hubResponse.description)
-    def mac = parsedEvent.mac.substring(12)
+    def mac = parsedEvent.mac.substring(6)
     
 	//TRACE("[handleRoomPut] mac ${mac} JSON ${hubResponse.json} ")
     hubResponse.json.each { key ->
@@ -588,7 +579,7 @@ def handleRoomPut(physicalgraph.device.HubResponse hubResponse) {
     
 def handleConfigPut(physicalgraph.device.HubResponse hubResponse) {
 	def parsedEvent = parseEventMessage(hubResponse.description)
-    def mac = parsedEvent.mac.substring(12)
+    def mac = parsedEvent.mac.substring(6)
     def response = hubResponse?.json.success
     if (response) {
     	def sensor = response.toString().split("/")[2]
@@ -607,7 +598,7 @@ def handleEffect(physicalgraph.device.HubResponse hubResponse) {
 def handleCheckDevices(physicalgraph.device.HubResponse hubResponse) {
 
     def parsedEvent = parseEventMessage(hubResponse.description)
-    def mac = parsedEvent.mac.substring(12)
+    def mac = parsedEvent.mac.substring(6)
 
     if (hubResponse?.json?.error) {
     	log.error "[handleCheckDevices] Error in ${mac} ${hubResponse.json.error}"	
@@ -622,7 +613,7 @@ def handlePoll(physicalgraph.device.HubResponse hubResponse) {
     // check for encoded body....
     
     def parsedEvent = parseEventMessage(hubResponse.description)
-    def mac = parsedEvent.mac.substring(12)
+    def mac = parsedEvent.mac.substring(6)
     def motionCount = 0
     def sensorList = [:]
 	def usernameAPI = settings."z_BridgesUsernameAPI_${mac}"
@@ -630,7 +621,7 @@ def handlePoll(physicalgraph.device.HubResponse hubResponse) {
     def i = 0 
     
     settings.z_Bridges.each { bridge ->
-    	if (bridge.getDeviceNetworkId().toUpperCase().indexOf(mac) != -1) hostIP = bridge.currentValue("networkAddress")
+    	if (bridge.currentValue("serialNumber").toUpperCase().indexOf(mac) != -1) hostIP = bridge.currentValue("networkAddress")
     }
 
     if (hubResponse?.json?.error) {
@@ -806,7 +797,7 @@ def handlePollSensor(physicalgraph.device.HubResponse hubResponse) {
 
 	
 	def parsedEvent = parseEventMessage(hubResponse.description)
-    def mac = parsedEvent.mac.substring(12)
+    def mac = parsedEvent.mac.substring(6)
     def body = hubResponse.json
 
     if (hubResponse.json.error) {
@@ -845,7 +836,7 @@ def handlePollSensor(physicalgraph.device.HubResponse hubResponse) {
 }
 
 private poll(hostIP, usernameAPI) {
-    TRACE("[poll] hostIP ${hostIP}; usernameAPI is ${hostIP}")
+
 	if(hostIP.indexOf(":") == -1) hostIP = hostIP + ":80"
 
     def hubAction = new physicalgraph.device.HubAction(
@@ -863,7 +854,7 @@ private def getAPI(mac) {
     def usernameAPI = settings."z_BridgesUsernameAPI_${mac}"
     
     settings.z_Bridges.each { bridge ->
-    	if (bridge.getDeviceNetworkId().toUpperCase().indexOf(mac) != -1) hostIP = bridge.currentValue("networkAddress")
+    	if (bridge.currentValue("serialNumber").toUpperCase().indexOf(mac) != -1) hostIP = bridge.currentValue("networkAddress")
     }
     
 	if (hostIP.indexOf(":") == -1) hostIP = hostIP + ":80"
@@ -890,7 +881,7 @@ def configHueRoomEffects(call) {
     def serialNumber = call.dni.split("/")[0]
     def hostIP
     settings.z_Bridges.each { bridge ->
-        def match = bridge.getDeviceNetworkId().indexOf(serialNumber)
+        def match = bridge.currentValue("serialNumber").indexOf(serialNumber)
         if (match != -1) {
             hostIP = bridge.currentValue("networkAddress") 
             if(hostIP.indexOf(":") == -1) hostIP = hostIP + ":80" // Hue B
@@ -919,7 +910,7 @@ def configHueMotion(call) {
                 def serialNumber = dni.split("/")[0]
                 def hostIP
                 settings.z_Bridges.each { bridge ->
-                    def match = bridge.getDeviceNetworkId().indexOf(serialNumber)
+                    def match = bridge.currentValue("serialNumber").indexOf(serialNumber)
                     if (match != -1) {
                         hostIP = bridge.currentValue("networkAddress") 
                         if(hostIP.indexOf(":") == -1) hostIP = hostIP + ":80" // Hue B
@@ -944,10 +935,10 @@ def checkDevices() {
     settings.z_Bridges.each { dev ->
 		if (dev.currentValue("status").toUpperCase() == "ONLINE") {
         	TRACE("[checkDevices] check devices")
-            def serialNumber = dev.getDeviceNetworkId()
+            def serialNumber = dev.currentValue("serialNumber")
 
             if (dev.currentValue("username")) {
-                serialNumber = serialNumber.substring(12)	// Hue B
+                serialNumber = serialNumber.substring(6)	// Hue B
             }
 
             def hostIP = dev.currentValue("networkAddress")
@@ -1022,7 +1013,7 @@ void groupCommand(attr) {
     def usernameAPI = settings."z_BridgesUsernameAPI_${mac}"
  
  	settings.z_Bridges.each { bridge ->
-        def match = bridge.getDeviceNetworkId().indexOf(mac)
+        def match = bridge.currentValue("serialNumber").indexOf(mac)
     	if (match != -1) {
         	hostIP = bridge.currentValue("networkAddress") 
             if(hostIP.indexOf(":") == -1) hostIP = hostIP + ":80" // Hue B
