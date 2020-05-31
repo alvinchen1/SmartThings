@@ -134,15 +134,15 @@ def pageBridges() {
                     section("Bridge ${dev}, Serial:${serialNumber}, IPaddress for API is in device in IDE", hideable:true) {
                     	if (!IPaddress) {
                         	href(name: "${dev.id}", title: "IDE Bridge device",required: false, style: "external", url: "${getApiServerUrl()}/device/show/${dev.id}", description: "tap to view device in IDE")
-                            input "z_BridgesIPaddressAPI_${serialNumber}", "text", required:true, title:"IPaddress for API", submitOnChange:true
+                            input "z_BridgesIPaddressAPI_${serialNumber}", "text", required:true, title:"Please enter IPaddress for ${dev}", submitOnChange:true
                         }
                         else {                         
                         	paragraph IPaddress
                         	input "z_BridgesIPaddressAPI_${serialNumber}", "text", required:true, title:"IPaddress for API", submitOnChange:true, description:IPaddress
                         }
                         if (!username) {
-                        	href(name: "${dev.id}", title: "IDE Bridge device",required: false, style: "external", url: "${getApiServerUrl()}/device/show/${dev.id}", description: "tap to view device in IDE")
-                            input "z_BridgesUsernameAPI_${serialNumber}", "text", required:true, title:"Username for API", submitOnChange:true
+                        	//href(name: "${dev.id}", title: "IDE Bridge device",required: false, style: "external", url: "${getApiServerUrl()}/device/show/${dev.id}", description: "tap to view device in IDE")
+                            input "z_BridgesUsernameAPI_${serialNumber}", "text", required:true, title:"Please enter the Username for ${dev}", submitOnChange:true
                         }
                         else {                         
                         	paragraph username
