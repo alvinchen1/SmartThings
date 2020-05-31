@@ -131,7 +131,7 @@ def pageBridges() {
                     serialNumber = serialNumber.substring(12) // HUE B Attribute 
                     }
                     
-                    section("Bridge ${dev}, Serial:${serialNumber}, IPaddress:${IPaddress} Username for API is in device in IDE", hideable:true) {
+                    section("Bridge ${dev}, Serial:${serialNumber}, IPaddress:${networkAddress} Username for API is in device in IDE", hideable:true) {
                     	                        if (!username) {
                         	//href(name: "${dev.id}", title: "IDE Bridge device",required: false, style: "external", url: "${getApiServerUrl()}/device/show/${dev.id}", description: "tap to view device in IDE")
                             input "z_BridgesUsernameAPI_${serialNumber}", "text", required:true, title:"Please enter the Username for ${dev}", submitOnChange:true
