@@ -321,7 +321,7 @@ def pollTheSensors(data) {
     settings.z_Bridges.each { dev ->
 		
 		def serialNumber = dev.getDeviceNetworkId()
-        TRACE("[pollTheSensors] serial number is ${serialNumber}")
+        TRACE("[pollTheSensors 324] serial number is ${serialNumber}")
         if (dev.currentValue("username")) {
         	serialNumber = serialNumber.substring(12)	// Hue B
         }
