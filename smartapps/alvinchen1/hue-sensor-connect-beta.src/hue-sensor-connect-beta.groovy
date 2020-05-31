@@ -334,7 +334,8 @@ def pollTheSensors(data) {
             if (state.pollSensors) {
                 if (!data.elevatedPolling) {
                     state.elevatedPolling = false
-                    poll(networkAddress, settings."z_BridgesUsernameAPI_${serialNumber}")
+                    TRACE("[pollTheSensors 337] serial number is ${serialNumber}")
+                    poll(settings."z_BridgesIPAddressAPI_${serialNumber}", settings."z_BridgesUsernameAPI_${serialNumber}")
                 }
                 else {
                     if (data?.dni == null) state.elevatedPolling = true
