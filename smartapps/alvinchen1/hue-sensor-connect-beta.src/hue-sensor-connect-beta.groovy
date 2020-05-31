@@ -123,13 +123,13 @@ def pageBridges() {
                     def serialNumber = dev.getDeviceNetworkId()
                     def networkAddress = dev.currentValue("IPaddress") 
                     def IPaddress = dev.currentValue("IPaddress") // HUE B Attribute  
-                    // if (IPaddress) {
-                    //	serialNumber = serialNumber.substring(6) // HUE B Attribute 
-                    // }
+                    if (IPaddress) {
+                    serialNumber = serialNumber.substring(6) // HUE B Attribute 
+                    }
                     def username = dev.currentValue("username") // HUE B Attribute  
-                    // if (username) {
-                    //	serialNumber = serialNumber.substring(6) // HUE B Attribute 
-                    // }
+                    if (username) {
+                    serialNumber = serialNumber.substring(6) // HUE B Attribute 
+                    }
                     
                     section("Bridge ${dev}, Serial:${serialNumber}, IPaddress for API is in device in IDE", hideable:true) {
                     	if (!IPaddress) {
