@@ -121,26 +121,18 @@ def pageBridges() {
             if (z_Bridges) {
                 z_Bridges.each { dev ->
                     def serialNumber = dev.getDeviceNetworkId()
-                    def networkAddress = dev.currentValue("IPaddress") 
-                    def IPaddress = dev.currentValue("IPaddress") // HUE B Attribute  
-                    if (IPaddress) {
-                    serialNumber = serialNumber.substring(12) // HUE B Attribute 
-                    }
+                    def networkAddress = dev.currentValue("ip") 
+                    //def IPaddress = dev.currentValue("ip") // HUE B Attribute  
+                    //if (IPaddress) {
+                    //serialNumber = serialNumber.substring(12) // HUE B Attribute 
+                    //}
                     def username = dev.currentValue("username") // HUE B Attribute  
                     if (username) {
                     serialNumber = serialNumber.substring(12) // HUE B Attribute 
                     }
                     
-                    section("Bridge ${dev}, Serial:${serialNumber}, IPaddress for API is in device in IDE", hideable:true) {
-                    	if (!IPaddress) {
-                        	href(name: "${dev.id}", title: "IDE Bridge device",required: false, style: "external", url: "${getApiServerUrl()}/device/show/${dev.id}", description: "tap to view device in IDE")
-                            input "z_BridgesIPaddressAPI_${serialNumber}", "text", required:true, title:"Please enter IPaddress for ${dev}", submitOnChange:true
-                        }
-                        else {                         
-                        	paragraph IPaddress
-                        	input "z_BridgesIPaddressAPI_${serialNumber}", "text", required:true, title:"IPaddress for API", submitOnChange:true, description:IPaddress
-                        }
-                        if (!username) {
+                    section("Bridge ${dev}, Serial:${serialNumber}, IPaddress:${IPaddress} Username for API is in device in IDE", hideable:true) {
+                    	                        if (!username) {
                         	//href(name: "${dev.id}", title: "IDE Bridge device",required: false, style: "external", url: "${getApiServerUrl()}/device/show/${dev.id}", description: "tap to view device in IDE")
                             input "z_BridgesUsernameAPI_${serialNumber}", "text", required:true, title:"Please enter the Username for ${dev}", submitOnChange:true
                         }
@@ -151,7 +143,7 @@ def pageBridges() {
     
                         
                     }
-                    TRACE("[pageBridges] Submitted IP address is ${networkAddress}")
+                    //TRACE("[pageBridges] Submitted IP address is ${networkAddress}")
                     TRACE("[pageBridges] Submitted username is ${username}")
                 }
                 if (z_Sensors) {
@@ -334,7 +326,7 @@ def pollTheSensors(data) {
             if (state.pollSensors) {
                 if (!data.elevatedPolling) {
                     state.elevatedPolling = false
-                    TRACE("[pollTheSensors 337] serial number is ${serialNumber}")
+                    TRACE("[pollTheSensors 337]")
                     poll(settings."z_BridgesIPAddressAPI_${serialNumber}", settings."z_BridgesUsernameAPI_${serialNumber}")
                 }
                 else {
