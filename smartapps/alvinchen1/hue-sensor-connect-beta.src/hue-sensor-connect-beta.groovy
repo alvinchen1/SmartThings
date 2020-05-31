@@ -327,20 +327,20 @@ def pollTheSensors(data) {
         }
 
         //def networkAddress = dev.currentValue("ip")
-        TRACE("[pollTheSensors] networkaddress is ${networkAddress}")
+        // TRACE("[pollTheSensors] networkaddress is ${networkAddress}")
 		if (settings."z_BridgesUsernameAPI_${serialNumber}") {
         	pollRooms(settings."z_BridgesIPAddressAPI_${serialNumber}", settings."z_BridgesUsernameAPI_${serialNumber}")         
             
             if (state.pollSensors) {
                 if (!data.elevatedPolling) {
                     state.elevatedPolling = false
-                    poll(networkAddress, settings."z_BridgesUsernameAPI_${serialNumber}")
+                    poll(settings."z_BridgesIPAddressAPI_${serialNumber}", settings."z_BridgesUsernameAPI_${serialNumber}")
                 }
                 else {
                     if (data?.dni == null) state.elevatedPolling = true
                     def i = 0
                     for (i = 0; i < 60; i = i + interval) {
-                        runIn(i+bridgecount, handleElevatedPoll, [data: [hostIP: networkAddress, usernameAPI: settings."z_BridgesUsernameAPI_${serialNumber}"], overwrite: false]) 
+                        runIn(i+bridgecount, handleElevatedPoll, [data: [hostIP: settings."z_BridgesIPAddressAPI_${serialNumber}", usernameAPI: settings."z_BridgesUsernameAPI_${serialNumber}"], overwrite: false]) 
                     }
                 }
         	}
