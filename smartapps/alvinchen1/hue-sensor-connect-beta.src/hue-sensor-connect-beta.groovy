@@ -276,7 +276,7 @@ def elevatedDeviceCall(deviceId) {
     def mac = deviceId.split("/")[0]
     def sensor = deviceId.split("/")[2]
 	def usernameAPI = settings."z_BridgesUsernameAPI_${mac}"
-    def hostIP
+    def hostIP = settings."z_IPadddressAPI_${mac}"
     
     settings.z_Bridges.each { bridge ->
         def match = bridge.dev.getDeviceNetworkId().indexOf(mac)
