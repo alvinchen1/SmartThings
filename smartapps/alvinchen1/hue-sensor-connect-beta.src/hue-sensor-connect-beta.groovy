@@ -327,7 +327,7 @@ def pollTheSensors(data) {
         }
 
         //def networkAddress = dev.currentValue("ip")
-        // TRACE("[pollTheSensors] networkaddress is ${networkAddress}")
+        // TRACE("[pollTheSensors 330] networkaddress is ${networkAddress}")
 		if (settings."z_BridgesUsernameAPI_${serialNumber}") {
         	pollRooms(settings."z_BridgesIPAddressAPI_${serialNumber}", settings."z_BridgesUsernameAPI_${serialNumber}")         
             
