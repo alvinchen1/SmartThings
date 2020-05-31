@@ -68,7 +68,7 @@ def pageBridges() {
 	if (z_Bridges) {
     	def canPoll = false
     	z_Bridges.each { dev ->
-        	def sN = dev.currentValue("serialNumber")
+        	def sN = dev.getDeviceNetworkId()
             if (dev.currentValue("username")) {
             	sN = sN.substring(6)  // Hue B
                 TRACE("[pageBridges] Hue B SMART detected for ${sN}")
