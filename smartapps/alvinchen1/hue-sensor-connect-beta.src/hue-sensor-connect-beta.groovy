@@ -126,6 +126,10 @@ def pageBridges() {
                     if (IPaddress) {
                     	serialNumber = serialNumber.substring(6) // HUE B Attribute 
                     }
+                    def username = dev.currentValue("username") // HUE B Attribute  
+                    if (username) {
+                    	serialNumber = serialNumber.substring(6) // HUE B Attribute 
+                    }
                     
                     section("Bridge ${dev}, Serial:${serialNumber}, IPaddress for API is in device in IDE", hideable:true) {
                     	if (!IPaddress) {
@@ -136,17 +140,7 @@ def pageBridges() {
                         	paragraph IPaddress
                         	input "z_BridgesIPaddressAPI_${serialNumber}", "text", required:true, title:"IPaddress for API", submitOnChange:true, description:IPaddress
                         }
-    
-                        
-                    }
-                    TRACE("[pageBridges] IP address is ${networkAddress}")
-                    def username = dev.currentValue("username") // HUE B Attribute  
-                    if (username) {
-                    	serialNumber = serialNumber.substring(6) // HUE B Attribute 
-                    }
-                    
-                    section("Bridge ${dev}, Serial:${serialNumber}, username for API is in device in IDE", hideable:true) {
-                    	if (!username) {
+                        if (!username) {
                         	href(name: "${dev.id}", title: "IDE Bridge device",required: false, style: "external", url: "${getApiServerUrl()}/device/show/${dev.id}", description: "tap to view device in IDE")
                             input "z_BridgesUsernameAPI_${serialNumber}", "text", required:true, title:"Username for API", submitOnChange:true
                         }
@@ -157,6 +151,7 @@ def pageBridges() {
     
                         
                     }
+                    TRACE("[pageBridges] IP address is ${networkAddress}")
                     TRACE("[pageBridges] username is ${username}")
                 }
                 if (z_Sensors) {
