@@ -352,6 +352,8 @@ def updateState(response) {
 //        log.trace "updating state from json: $json.bolt_state_time, $json.firmware_version, $json.bolt_state"
         state.bolt_state_time = json.bolt_state_time
         state.firmware_version = json.firmware_version
+        currentState = state.currentState("lock")
+        log.trace "current state $currentState"
         if (currentFirmware != state.firmware_version) {
             sendEvent name: 'firmware', value: state.firmware_version
         }
